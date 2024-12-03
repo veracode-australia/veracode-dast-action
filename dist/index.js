@@ -28847,6 +28847,7 @@ const app_config_1 = __importDefault(__nccwpck_require__(1552));
 async function postResource(vid, vkey, resource) {
     const resourceUri = resource.resourceUri;
     const body = resource.body;
+    console.log(body);
     let host = app_config_1.default.hostName.veracode.us;
     if (vid.startsWith('vera01ei-')) {
         host = app_config_1.default.hostName.veracode.eu;
@@ -28864,8 +28865,10 @@ async function postResource(vid, vkey, resource) {
         'Content-Type': 'application/json',
     };
     const appUrl = `https://${host}${resourceUri}`;
+    console.log(appUrl);
+    const bodyString = JSON.stringify(body);
     try {
-        const response = await fetch(appUrl, { method: 'POST', headers, body });
+        const response = await fetch(appUrl, { method: 'POST', headers, body: bodyString });
         const data = await response.json();
         return data;
     }

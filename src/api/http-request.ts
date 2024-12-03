@@ -21,6 +21,7 @@ interface POSTResource {
 export async function postResource<T>(vid: string, vkey: string, resource: POSTResource): Promise<T> {
   const resourceUri = resource.resourceUri;
   const body = resource.body;
+  console.log(body);
   let host = appConfig.hostName.veracode.us;
   if (vid.startsWith('vera01ei-')) {
     host = appConfig.hostName.veracode.eu;
@@ -38,8 +39,10 @@ export async function postResource<T>(vid: string, vkey: string, resource: POSTR
     'Content-Type': 'application/json',
   };
   const appUrl = `https://${host}${resourceUri}`;
+  console.log(appUrl);
+  const bodyString = JSON.stringify(body);
   try {
-    const response = await fetch(appUrl, { method: 'POST', headers, body });
+    const response = await fetch(appUrl, { method: 'POST', headers, body: bodyString });
     const data = await response.json();
     return data as T;
   } catch (error) {

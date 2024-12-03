@@ -18,7 +18,9 @@ export type Inputs = {
   vkey: string;
   dast_config_file_name: string;
   // appname: string;
-  // token: string;
+  token: string;
+  owner: string;
+  repo: string;
   // check_run_id: number;
   // source_repository: string;
   // fail_checks_on_policy: boolean;
@@ -48,10 +50,13 @@ export const parseInputs = (getInput: GetInput): Inputs => {
   const vid = getInput('vid');
   const vkey = getInput('vkey');
   const dast_config_file_name = getInput('dast_config_file_name');
-  return { vid, vkey, dast_config_file_name} as Inputs;
+  const token = getInput('token');
+  const owner = getInput('owner');
+  const repo = getInput('repo');
+  return { vid, vkey, dast_config_file_name, token, owner, repo } as Inputs;
   // const appname = getInput('appname', { required: true });
 
-  // const token = getInput('token');
+
   // const check_run_id = getInput('check_run_id');
   // const source_repository = getInput('source_repository');
 

@@ -13,6 +13,7 @@ interface AppConfig {
             sandboxUri: string;
             selfUserUri: string;
             policyUri: string;
+            dastUri: string;
         };
         github: '';
     };

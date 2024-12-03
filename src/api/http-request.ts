@@ -1,4 +1,4 @@
-import * as core from '@actions/core';
+// import * as core from '@actions/core';
 import { calculateAuthorizationHeader } from './veracode-hmac';
 import appConfig from '../app-config';
 
@@ -11,6 +11,40 @@ interface Resource {
 interface ResourceById {
   resourceUri: string;
   resourceId: string;
+}
+
+interface POSTResource {
+  resourceUri: string;
+  body: string;
+}
+
+export async function postResource<T>(vid: string, vkey: string, resource: POSTResource): Promise<T> {
+  const resourceUri = resource.resourceUri;
+  const body = resource.body;
+  let host = appConfig.hostName.veracode.us;
+  if (vid.startsWith('vera01ei-')) {
+    host = appConfig.hostName.veracode.eu;
+    vid = vid.split('-')[1] || '';  // Extract part after '-'
+    vkey = vkey.split('-')[1] || ''; // Extract part after '-'
+  }
+  const headers = {
+    Authorization: calculateAuthorizationHeader({
+      id: vid,
+      key: vkey,
+      host: host,
+      url: resourceUri,
+      method: 'POST',
+    }),
+    'Content-Type': 'application/json',
+  };
+  const appUrl = `https://${host}${resourceUri}`;
+  try {
+    const response = await fetch(appUrl, { method: 'POST', headers, body });
+    const data = await response.json();
+    return data as T;
+  } catch (error) {
+    throw new Error(`Failed to post resource: ${error}`);
+  }
 }
 
 export async function getResourceByAttribute<T>(vid: string, vkey: string, resource: Resource): Promise<T> {

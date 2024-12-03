@@ -1,25 +1,31 @@
 // // import * as core from '@actions/core';
-// // import appConfig from '../app-config';
+import appConfig from '../app-config';
 // // import { Octokit } from '@octokit/rest';
 // // import * as Checks from '../namespaces/Checks';
 // // import { updateChecks } from './check-service';
 // // import * as VeracodeApplication from '../namespaces/VeracodeApplication';
-// // import * as http from '../api/http-request';
+import * as http from '../api/http-request';
 // // // import { Inputs, vaildateRemoveSandboxInput } from '../inputs';
 // // import * as fs from 'fs/promises';
 // // import { DefaultArtifactClient } from '@actions/artifact';
 
-// export async function createDastProfileAndKickOffScan(
-//   appname: string,
-//   vid: string,
-//   vkey: string,
-// ): Promise<VeracodeApplication.Application> {
-//   try {
-//     const getApplicationByNameResource = {
-//       resourceUri: appConfig.api.veracode.applicationUri,
-//       queryAttribute: 'name',
-//       queryValue: encodeURIComponent(appname),
-//     };
+export async function createDastProfileAndKickOffScan(
+  vid: string,
+  vkey: string,
+  dastConfig: string
+): Promise<void> {
+  try {
+    const createDastResource = {
+      resourceUri: appConfig.api.veracode.dastUri,
+      body: dastConfig,
+    };
+    console.log('createDastResource:', createDastResource);
+    await http.postResource<void>(vid, vkey, createDastResource);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
 //     const applicationResponse: VeracodeApplication.ResultsData =
 //       await http.getResourceByAttribute<VeracodeApplication.ResultsData>(vid, vkey, getApplicationByNameResource);

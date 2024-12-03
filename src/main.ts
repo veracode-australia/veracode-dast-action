@@ -34,7 +34,8 @@ export async function run(): Promise<void> {
     if (response.status === 200 && response.data && 'content' in response.data) {
       // Decode Base64 content
       const content = Buffer.from(response.data.content, 'base64').toString('utf-8');
-      await dastService.createDastProfileAndKickOffScan(vid, vkey, content);
+      const jsonContent = JSON.parse(content);
+      await dastService.createDastProfileAndKickOffScan(vid, vkey, jsonContent);
       // console.log('Content:', content);
       // // Define output file path
       // const outputFilePath = path.resolve('input.json');

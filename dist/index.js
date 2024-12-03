@@ -24712,7 +24712,8 @@ exports.parseInputs = void 0;
 const parseInputs = (getInput) => {
     const vid = getInput('vid');
     const vkey = getInput('vkey');
-    return { vid, vkey };
+    const dast_config_file_name = getInput('dast_config_file_name');
+    return { vid, vkey, dast_config_file_name };
 };
 exports.parseInputs = parseInputs;
 

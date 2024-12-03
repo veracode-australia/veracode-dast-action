@@ -8,9 +8,9 @@ inputs:
   vkey:
     description: 'Veracode Key'
     required: true
-  # appname:
-  #   description: 'Veracode Application Name'
-  #   required: true
+  dast_config_file_name:
+    description: 'Dast Config File Name'
+    required: true
   # token:
   #   description: 'your GITHUB_TOKEN'
   #   required: false

@@ -16,6 +16,7 @@ export type Inputs = {
   // action: Actions;
   vid: string;
   vkey: string;
+  dast_config_file_name: string;
   // appname: string;
   // token: string;
   // check_run_id: number;
@@ -46,7 +47,8 @@ export const parseInputs = (getInput: GetInput): Inputs => {
 
   const vid = getInput('vid');
   const vkey = getInput('vkey');
-  return { vid, vkey } as Inputs;
+  const dast_config_file_name = getInput('dast_config_file_name');
+  return { vid, vkey, dast_config_file_name} as Inputs;
   // const appname = getInput('appname', { required: true });
 
   // const token = getInput('token');

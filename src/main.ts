@@ -1,6 +1,7 @@
 import * as core from '@actions/core';
 import { parseInputs } from './inputs';
 import * as fs from 'fs';
+import * as exec from '@actions/exec';
 // import * as policyService from './services/policy-service';
 // import * as pipelineResultsService from './services/pipeline-results-service';
 // import * as policyResultsService from './services/policy-results-services';
@@ -12,6 +13,7 @@ import * as fs from 'fs';
 export async function run(): Promise<void> {
   const inputs = parseInputs(core.getInput);
   console.log('Inputs:', inputs);
+  await exec.exec('ls', ['-l']);
 
   try {
     const dast_input_file_name = inputs.dast_config_file_name;

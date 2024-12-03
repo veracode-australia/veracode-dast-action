@@ -24752,9 +24752,18 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = void 0;
 const core = __importStar(__nccwpck_require__(9093));
 const inputs_1 = __nccwpck_require__(5164);
+const fs = __importStar(__nccwpck_require__(7147));
 async function run() {
     const inputs = (0, inputs_1.parseInputs)(core.getInput);
     console.log('Inputs:', inputs);
+    try {
+        const dast_input_file_name = inputs.dast_config_file_name;
+        const fileContent = fs.readFileSync(dast_input_file_name, 'utf8');
+        core.info(`File content: ${fileContent}`);
+    }
+    catch (error) {
+        core.setFailed('File not found');
+    }
 }
 exports.run = run;
 

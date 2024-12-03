@@ -28,7 +28,16 @@ export async function run(): Promise<void> {
       repo,
       path: dast_input_file_name
     });
-    core.info(`File content: ${response.data}`);
+    if (response.status === 200 && response.data && 'content' in response.data) {
+      // Decode Base64 content
+      const content = Buffer.from(response.data.content, 'base64').toString('utf-8');
+      console.log('Content:', content);
+    }
+    // const fileContent = response.data.content;
+    // // const fileContent = Buffer.from(response.data, 'base64').toString('utf8');
+    // const jsonConfig = JSON.parse(fileContent);
+    // convert the file content from base64 to json
+
     // const fileContent = Buffer.from(response.data, 'base64').toString('utf8');
     // core.info(`File content: ${fileContent}`);
   } catch (error) {

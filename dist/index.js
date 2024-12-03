@@ -30065,7 +30065,10 @@ async function run() {
             repo,
             path: dast_input_file_name
         });
-        core.info(`File content: ${response.data}`);
+        if (response.status === 200 && response.data && 'content' in response.data) {
+            const content = Buffer.from(response.data.content, 'base64').toString('utf-8');
+            console.log('Content:', content);
+        }
     }
     catch (error) {
         core.setFailed('File not found');

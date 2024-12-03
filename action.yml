@@ -1,0 +1,19 @@
+name: 'Veracode DAST Action'
+description: 'Kick Off Veracode DAST Scan'
+author: 'Vincent Deng'
+inputs:
+  vid:
+    description: 'Veracode ID'
+    required: true
+  vkey:
+    description: 'Veracode Key'
+    required: true
+  # appname:
+  #   description: 'Veracode Application Name'
+  #   required: true
+  # token:
+  #   description: 'your GITHUB_TOKEN'
+  #   required: false
+runs:
+  using: 'node20'
+  main: 'dist/index.js'

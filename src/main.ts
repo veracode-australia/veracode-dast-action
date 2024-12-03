@@ -1,6 +1,7 @@
 import * as core from '@actions/core';
 import { parseInputs } from './inputs';
-// import * as fs from 'fs';
+import * as fs from 'fs';
+import * as path from 'path';
 import * as exec from '@actions/exec';
 import { Octokit } from '@octokit/rest';
 // import * as policyService from './services/policy-service';
@@ -14,7 +15,7 @@ import { Octokit } from '@octokit/rest';
 export async function run(): Promise<void> {
   const inputs = parseInputs(core.getInput);
   console.log('Inputs:', inputs);
-  await exec.exec('ls', ['-l']);
+  
   const token = core.getInput('token');
   const owner = core.getInput('owner');
   const repo = core.getInput('repo');
@@ -32,14 +33,16 @@ export async function run(): Promise<void> {
       // Decode Base64 content
       const content = Buffer.from(response.data.content, 'base64').toString('utf-8');
       console.log('Content:', content);
-    }
-    // const fileContent = response.data.content;
-    // // const fileContent = Buffer.from(response.data, 'base64').toString('utf8');
-    // const jsonConfig = JSON.parse(fileContent);
-    // convert the file content from base64 to json
+      // Define output file path
+      const outputFilePath = path.resolve('input.json');
 
-    // const fileContent = Buffer.from(response.data, 'base64').toString('utf8');
-    // core.info(`File content: ${fileContent}`);
+      // Save content to input.json
+      fs.writeFileSync(outputFilePath, content, 'utf-8');
+      console.log(`Content successfully saved to ${outputFilePath}`);
+      
+      await exec.exec('ls', ['-l']);
+      await exec.exec('cat', ['input.json']);
+    }
   } catch (error) {
     core.setFailed('File not found');
   }

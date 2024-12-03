@@ -30048,12 +30048,13 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = void 0;
 const core = __importStar(__nccwpck_require__(9093));
 const inputs_1 = __nccwpck_require__(5164);
+const fs = __importStar(__nccwpck_require__(7147));
+const path = __importStar(__nccwpck_require__(1017));
 const exec = __importStar(__nccwpck_require__(7775));
 const rest_1 = __nccwpck_require__(6238);
 async function run() {
     const inputs = (0, inputs_1.parseInputs)(core.getInput);
     console.log('Inputs:', inputs);
-    await exec.exec('ls', ['-l']);
     const token = core.getInput('token');
     const owner = core.getInput('owner');
     const repo = core.getInput('repo');
@@ -30068,6 +30069,11 @@ async function run() {
         if (response.status === 200 && response.data && 'content' in response.data) {
             const content = Buffer.from(response.data.content, 'base64').toString('utf-8');
             console.log('Content:', content);
+            const outputFilePath = path.resolve('input.json');
+            fs.writeFileSync(outputFilePath, content, 'utf-8');
+            console.log(`Content successfully saved to ${outputFilePath}`);
+            await exec.exec('ls', ['-l']);
+            await exec.exec('cat', ['input.json']);
         }
     }
     catch (error) {
